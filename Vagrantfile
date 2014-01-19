@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Vagrantfile API/syntax version. Don"t touch unless you know what you"re doing!
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -12,8 +12,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "precise64"
 
-  # The url from where the "config.vm.box" box will be fetched if it
-  # doesn"t already exist on the user"s system.
+  # The url from where the 'config.vm.box' box will be fetched if it
+  # doesn't already exist on the user's system.
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
   # Create a forwarded port mapping which allows access to a specific port
@@ -45,35 +45,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Example for VirtualBox:
   #
   # config.vm.provider :virtualbox do |vb|
-  #   # Don"t boot with headless mode
+  #   # Don't boot with headless mode
   #   vb.gui = true
   #
   #   # Use VBoxManage to customize the VM. For example to change memory:
   #   vb.customize ["modifyvm", :id, "--memory", "1024"]
   # end
   #
-  # View the documentation for the provider you"re using for more
+  # View the documentation for the provider you're using for more
   # information on available options.
 
-  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-  # path, and data_bags path (all relative to this Vagrantfile), and adding
-  # some recipes and/or roles.
-  #
-  # config.vm.provision :chef_solo do |chef|
-  #   chef.cookbooks_path = "../my-recipes/cookbooks"
-  #   chef.roles_path = "../my-recipes/roles"
-  #   chef.data_bags_path = "../my-recipes/data_bags"
-  #   chef.add_recipe "mysql"
-  #   chef.add_role "web"
-  #
-  #   # You may also specify custom JSON attributes:
-  #   chef.json = { :mysql_password => "foo" }
-  # end
+  config.vm.boot_timeout = 1800
 
   config.omnibus.chef_version = :latest
   config.librarian_chef.cheffile_dir = "chef-repo"
 
   config.vm.provision :chef_solo do |chef|
+    # chef.log_level = :debug
     chef.cookbooks_path = ["chef-repo/cookbooks", "chef-repo/site-cookbooks"]
     chef.roles_path = "chef-repo/roles"
     chef.data_bags_path = "chef-repo/data_bags"
@@ -90,78 +78,49 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       "ruby_build" => {
         "upgrade" => "sync"
       },
-      :plenv => {
-        :users => [
-          {
-            :name => "vagrant",
-            :gname => "vagrant",
-            :versions => [
-              {
-                :version => "5.8.9",
-              },
-              {
-                :version => "5.12.5",
-                :cpanm_options => "--force",
-                :modules => %w[
-                  App::Ack
-                ],
-              },
-              {
-                :version => "5.14.4",
-                :cpanm_options => "--force",
-                :modules => %w[
-                  App::Ack
-                ],
-              },
-              {
-                :version => "5.18.1",
-                :cpanm_options => "--force",
-                :modules => %w[
-                  App::Ack
-                ],
-              },
-            ],
-            :global => "5.12.5",
-          },
-        ],
-      },
-      :nodebrew => {
-        :user => "vagrant",
-        :root => "/home/vagrant/.nodebrew",
-        :nodes => [
-          { :version => "0.11.6" },
-          { :version => "0.10.17" }
-        ],
-        :use => "0.10.17",
-        :npm => {
-          "0.11.6" => [
-            "yo"
-          ],
-          "0.10.17" => [
-            "yo"
-          ]
-        }
-      },
       "rbenv" => {
         "user_installs" => [
           "user" => "vagrant",
-          "root_path" => "/home/vagrant/.rbenv",
-          "global"  => "1.9.3-p448",
-          "rubies" => [ "1.8.7-p374", "1.9.3-p448", "2.0.0-p247"],
+          "group" => "vagrant",
+          "global"  => "2.1.0",
+          "rubies" => [ "1.8.7-p375", "1.9.3-p448", "2.1.0"],
           "gems" => {
-            "1.8.7-p374" => [
+            "1.8.7-p375" => [
               { "name" => "bundler" }
             ],
             "1.9.3-p448" => [
               { "name" => "bundler" }
             ],
-            "2.0.0-p247" => [
-              { "name" => "bundler" }
+            "2.1.0" => [
+              { "name" => "bundler" },
+              { "name" => "hub" }
             ],
           }
         ]
       }
     }
-
   end
+
+  # Enable provisioning with chef server, specifying the chef server URL,
+  # and the path to the validation key (relative to this Vagrantfile).
+  #
+  # The Opscode Platform uses HTTPS. Substitute your organization for
+  # ORGNAME in the URL and validation key.
+  #
+  # If you have your own Chef Server, use the appropriate URL, which may be
+  # HTTP instead of HTTPS depending on your configuration. Also change the
+  # validation key to validation.pem.
+  #
+  # config.vm.provision :chef_client do |chef|
+  #   chef.chef_server_url = "https://api.opscode.com/organizations/ORGNAME"
+  #   chef.validation_key_path = "ORGNAME-validator.pem"
+  # end
+  #
+  # If you're using the Opscode platform, your validator client is
+  # ORGNAME-validator, replacing ORGNAME with your organization name.
+  #
+  # If you have your own Chef Server, the default validation client name is
+  # chef-validator, unless you changed the configuration.
+  #
+  #   chef.validation_client_name = "ORGNAME-validator"
 end

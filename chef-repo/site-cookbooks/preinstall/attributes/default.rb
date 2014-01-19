@@ -1,6 +1,7 @@
 node.default[:packages] = %w(
   curl
   build-essential
+  gdb
   libyaml-dev
   libxml2
   libxml2-dev

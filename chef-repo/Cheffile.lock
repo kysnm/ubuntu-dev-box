@@ -45,32 +45,12 @@ GIT
   specs:
     rbenv (0.7.2)
 
-GIT
-  remote: git://github.com/kysnm/chef-plenv.git
-  ref: fix_attribute_group
-  sha: 627334105681a43533de4830ee9a3580285819ee
-  specs:
-    plenv (0.1.0)
-      build-essential (>= 0.0.0)
-      git (>= 0.0.0)
-
-GIT
-  remote: git://github.com/linyows/nodebrew-cookbook.git
-  ref: master
-  sha: f5230e68686af0cd0893e6b53fb806c83b7930a4
-  specs:
-    nodebrew (0.2.0)
-      build-essential (>= 0.0.0)
-      git (>= 0.0.0)
-
 DEPENDENCIES
   apt (>= 0)
   database (>= 0)
   git (>= 0)
   memcached (>= 0)
   mysql (>= 0)
-  nodebrew (>= 0)
-  plenv (>= 0)
   rbenv (>= 0)
   ruby_build (>= 0)
   sqlite (>= 0)

@@ -9,12 +9,8 @@ run_list(
   "recipe[mysql::ruby]",
   "recipe[mysql::server]",
   "recipe[plenv]",
-  "recipe[plenv::install]",
-  "recipe[plenv::global]",
-  "recipe[plenv::cpanm]",
   "recipe[nodebrew]",
   "recipe[ruby_build]",
   "recipe[rbenv::user]",
   "recipe[rbenv::vagrant]",
-  "recipe[postinstall]"
 )
